@@ -21,11 +21,14 @@ namespace Clasterization.Clasterization.KeyCollision
 
         public IEnumerable<ITable> Clasterize(ITable table, int keyColumnNumber)
         {
-            return table.GroupBy(keySelector: row => _keyCalculator.CalculateKey(row.ElementAt(keyColumnNumber)))
-                        .Select(groop => new Table(groop.Select(x => x.ToList() as IList<string>)
-                                                        .ToList(), table.Header))
-                        .Cast<ITable>()
-                        .ToList();
+            var group = table.GroupBy(keySelector: row => _keyCalculator.CalculateKey(row.ElementAt(keyColumnNumber)));
+            var tables = group.Select(groop => new Table(groop.Select(x => x.ToList() as IList<string>)
+                                                        .ToList(), table.Header));
+
+            return tables
+                .Cast<ITable>()
+                .ToList();
+
         }
     }
 }

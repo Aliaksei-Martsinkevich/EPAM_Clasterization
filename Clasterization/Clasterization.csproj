@@ -85,12 +85,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LZW_LIB\LZW_LIB.vbproj">
-      <Project>{02a54641-0a53-4193-a37d-bb7f26c1f9d6}</Project>
-      <Name>LZW_LIB</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

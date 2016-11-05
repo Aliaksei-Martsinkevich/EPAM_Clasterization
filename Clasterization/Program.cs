@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using Clasterization.Clasterization.KeyCollision;
 using Clasterization.Clasterization.NeatrestNeighbour;
 using Clasterization.Interfaces;
@@ -44,7 +46,7 @@ namespace Clasterization
 
             var writer = new Writer();
             var number = 0;
-            foreach (var claseters in _method.Clasterize(table, 15).Where(claseters => claseters.Count() <= 1))
+            foreach (var claseters in _method.Clasterize(table, 15).Where(claseters => claseters.Count() > 1))
             {
                 writer.Write(claseters, _filename.Split('.')[0] + ++number + ".csv");
             }

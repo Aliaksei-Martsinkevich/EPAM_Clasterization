@@ -3,7 +3,8 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using Clasterization.Interfaces;
-using LZW_LIB;
+using System.IO.Compression;
+using System.Linq;
 
 namespace Clasterization.Clasterization.NeatrestNeighbour
 {
@@ -11,30 +12,21 @@ namespace Clasterization.Clasterization.NeatrestNeighbour
     {
         private static BitArray CompressString(string str)
         {
-            var lzw = new LZWCompressor();
-            var reader = new BinaryReader(new MemoryStream(Encoding.UTF8.GetBytes(str)));
-            var writer = new BinaryWriter(new MemoryStream());
-
-            lzw.BrInput = reader;
-            lzw.BwOutput = writer;
-
-            lzw.Compress();
-
-            reader.Close();
-
-            lzw.BwOutput.Flush();
-            lzw.BwOutput.Seek(0, SeekOrigin.Begin);
-
-            BitArray result;
-            using (var resulReader = new BinaryReader(lzw.BwOutput.BaseStream))
+            var outStream = new MemoryStream();
+            using (var stringStream = new MemoryStream(Encoding.UTF8.GetBytes(str)))
             {
-                result = new BitArray(resulReader.ReadBytes(Convert.ToInt32(resulReader.BaseStream.Length)));
-                resulReader.Close();
+                using (var gZipStream = new GZipStream(outStream, CompressionMode.Compress, true))
+                {
+                    stringStream.CopyTo(gZipStream);
+                }
             }
-            writer.Close();
-            return result;
-        }
+            outStream.Flush();
+            var pos = (int) outStream.Position;
+            outStream.Seek(0, SeekOrigin.Begin);
 
+            return new BitArray(outStream.GetBuffer().Take(pos).ToArray());
+
+        }
 
         public double CalculateDistance(string x, string y) =>
             1.0 * (CompressString(x + y).Length + CompressString(y + x).Length)
