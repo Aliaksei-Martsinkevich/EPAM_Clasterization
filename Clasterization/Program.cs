@@ -1,54 +1,71 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Clasterization.Clasterization.KeyCollision;
-using Clasterization.Clasterization.NeatrestNeighbour;
+using Clasterization.Clasterization;
+using Clasterization.Clasterization.Algorythms;
+using Clasterization.Clasterization.Algorythms.KeyCollision;
+using Clasterization.Clasterization.Algorythms.NeatrestNeighbour;
 using Clasterization.Interfaces;
 using Clasterization.IO;
+
 
 namespace Clasterization
 {
     internal class Program
     {
-        private static string _filename;
+        private static FileInfo _fileinfo;
+        private static IClasterizer _method;
+        private static int _headerNumber;
+        private static CommandsConfiguration _configuration;
 
-        private static IClasterizator _method;
-
-        private static void Initialize(string[] args)
+        private static void Initialize(CommandsConfiguration configuration)
         {
-            _filename = args[1];
-            switch (args[0])
+            _fileinfo = new FileInfo(configuration.Filename);
+            _headerNumber = configuration.TargetColumn;
+            switch (configuration.Algorythm)
             {
                 case "fingerprint":
                 default:
-                    _method = new KeyCollisionClasterizator(new FingerprintKeyCalculator());
+                    _method = new Clasterizer(
+                        new KeyCollisionStringComparer(
+                            new FingerprintKeyCalculator()));
                     break;
                 case "ngram":
-                    _method = new KeyCollisionClasterizator(new NGramFingerprintKeyCalculator());
+                    _method = new Clasterizer(
+                        new KeyCollisionStringComparer(
+                            new NGramFingerprintKeyCalculator()));
                     break;
                 case "phonetic":
-                    _method = new KeyCollisionClasterizator(new PhoneticFingerprintKeyCalculator());
+                    _method = new Clasterizer(
+                        new KeyCollisionStringComparer(
+                            new PhoneticFingerprintKeyCalculator()));
                     break;
                 case "leivenstein":
-                    _method = new NearestNeghbourClasterizator(new LeivensteinDistanceCalculator());
+                    _method = new Clasterizer(
+                        new DistanceStringComparer(
+                            new LeivensteinDistanceCalculator()));
                     break;
                 case "ppm":
-                    _method = new NearestNeghbourClasterizator(new PpmDistanceCalculator());
+                    _method = new Clasterizer(
+                        new DistanceStringComparer(
+                            new PpmDistanceCalculator()));
                     break;
             }
         }
 
         private static void Main(string[] args)
         {
-            Initialize(args);
+            _configuration = Args.Configuration.Configure<CommandsConfiguration>().CreateAndBind(args);
+            Initialize(_configuration);
             var reader = new Reader();
-            var table = reader.ReadTable(_filename);
+            var table = reader.ReadTable(_fileinfo.FullName);
 
             var writer = new Writer();
+            var outputDirectory = _fileinfo.Directory.CreateSubdirectory($"{_fileinfo.Name.Split('.')[0]}_{_configuration.Algorythm}_'{table.Header[_headerNumber]}'");
             var number = 0;
-            foreach (var claseters in _method.Clasterize(table, 15).Where(claseters => claseters.Count() > 1))
+            foreach (var claseters in _method.Clasterize(table, _headerNumber).Where(claseters => claseters.Count() > 1))
             {
-                writer.Write(claseters, _filename.Split('.')[0] + ++number + ".csv");
+                writer.Write(claseters, $"{outputDirectory.FullName}//{++number}.csv");
             }
         }
     }

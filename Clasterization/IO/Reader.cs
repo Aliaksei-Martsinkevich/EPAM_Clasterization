@@ -12,7 +12,7 @@ namespace Clasterization.IO
         {
             IList<IList<string>> values;
             string[] header;
-            using (var reader = new StreamReader(filename))
+            using (var reader = new StreamReader(new FileStream(filename, FileMode.Open, FileAccess.Read)))
             {
                 var parser = new CsvParser(reader);
 
