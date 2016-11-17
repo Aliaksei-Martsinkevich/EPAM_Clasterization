@@ -26,29 +26,19 @@ namespace Clasterization
             {
                 case "fingerprint":
                 default:
-                    _method = new Clasterizer(
-                        new KeyCollisionStringComparer(
-                            new FingerprintKeyCalculator()));
+                    _method = new Clasterizer(new FingerprintStringComparer());
                     break;
                 case "ngram":
-                    _method = new Clasterizer(
-                        new KeyCollisionStringComparer(
-                            new NGramFingerprintKeyCalculator()));
+                    _method = new Clasterizer(new NGramStringComparer());
                     break;
                 case "phonetic":
-                    _method = new Clasterizer(
-                        new KeyCollisionStringComparer(
-                            new PhoneticFingerprintKeyCalculator()));
+                    _method = new Clasterizer(new PhoneticStringComparer());
                     break;
                 case "leivenstein":
-                    _method = new Clasterizer(
-                        new DistanceStringComparer(
-                            new LeivensteinDistanceCalculator()));
+                    _method = new Clasterizer(new LeivensteinStringComparer(1D));
                     break;
                 case "ppm":
-                    _method = new Clasterizer(
-                        new DistanceStringComparer(
-                            new PpmDistanceCalculator()));
+                    _method = new Clasterizer(new PpmStringComparer(1D));
                     break;
             }
         }
@@ -63,9 +53,17 @@ namespace Clasterization
             var writer = new Writer();
             var outputDirectory = _fileinfo.Directory.CreateSubdirectory($"{_fileinfo.Name.Split('.')[0]}_{_configuration.Algorythm}_'{table.Header[_headerNumber]}'");
             var number = 0;
-            foreach (var claseters in _method.Clasterize(table, _headerNumber).Where(claseters => claseters.Count() > 1))
+
+
+            foreach (var claster in _method.Clasterize(table, _headerNumber).Where(claseters => claseters.Count() > 1))
             {
-                writer.Write(claseters, $"{outputDirectory.FullName}//{++number}.csv");
+                Console.WriteLine("Next claster");
+                foreach (var s in claster.GetColumn(_headerNumber).Distinct())
+                {
+                    Console.WriteLine(s);
+                }
+                Console.ReadKey(true);      
+                writer.Write(claster, $"{outputDirectory.FullName}//{++number}.csv");
             }
         }
     }

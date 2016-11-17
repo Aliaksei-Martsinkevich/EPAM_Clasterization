@@ -49,15 +49,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clasterization\Algorythms\KeyCollisionStringComparer.cs" />
+    <Compile Include="Clasterization\Algorythms\KeyCollision\FingerprintStringComparer.cs" />
+    <Compile Include="Clasterization\Algorythms\KeyCollision\NGramStringComparer.cs" />
+    <Compile Include="Clasterization\Algorythms\KeyCollision\PhoneticStringComparer.cs" />
+    <Compile Include="Clasterization\Algorythms\NeatrestNeighbour\LeivensteinStringComparer.cs" />
+    <Compile Include="Clasterization\Algorythms\NeatrestNeighbour\PPMStringComparer.cs" />
     <Compile Include="Clasterization\Clasterizer.cs" />
-    <Compile Include="Clasterization\Algorythms\KeyCollision\FingerprintKeyCalculator.cs" />
     <Compile Include="Clasterization\Algorythms\StringOperationsExtensions.cs" />
-    <Compile Include="Clasterization\Algorythms\DistanceStringComparer.cs" />
-    <Compile Include="Clasterization\Algorythms\KeyCollision\NGramFingerprintKeyCalculator.cs" />
-    <Compile Include="Clasterization\Algorythms\KeyCollision\PhoneticFingerprintKeyCalculator.cs" />
-    <Compile Include="Clasterization\Algorythms\NeatrestNeighbour\LeivensteinDistanceCalculator.cs" />
-    <Compile Include="Clasterization\Algorythms\NeatrestNeighbour\PPMDistanceCalculator.cs" />
     <Compile Include="Interfaces\IKeyCalculator.cs" />
     <Compile Include="Interfaces\IClasterizer.cs" />
     <Compile Include="Interfaces\IReader.cs" />
@@ -80,9 +78,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="records.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

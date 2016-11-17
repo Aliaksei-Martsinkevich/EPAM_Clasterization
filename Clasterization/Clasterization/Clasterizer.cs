@@ -15,7 +15,9 @@ namespace Clasterization.Clasterization
         }
 
         public IEnumerable<ITable> Clasterize(ITable table, string keyColumn)
-            => Clasterize(table, table.Header.IndexOf(keyColumn));
+        {
+            return Clasterize(table, table.Header.IndexOf(keyColumn));
+        }
 
         public IEnumerable<ITable> Clasterize(ITable table, int keyColumnNumber)
         {
