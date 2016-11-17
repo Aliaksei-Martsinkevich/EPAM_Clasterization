@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 
 namespace Clasterization.Clasterization.Algorythms.NeatrestNeighbour
@@ -16,7 +14,7 @@ namespace Clasterization.Clasterization.Algorythms.NeatrestNeighbour
 
         private double StringComparisonAccuracy { get; }
 
-        private static BitArray CompressString(string str)
+        private static long CompressStringLength(string str)
         {
             using (var outStream = new MemoryStream())
             {
@@ -28,12 +26,7 @@ namespace Clasterization.Clasterization.Algorythms.NeatrestNeighbour
                     }
                 }
                 outStream.Flush();
-                var pos = (int)outStream.Position;
-                outStream.Seek(0, SeekOrigin.Begin);
-
-                var buffer = outStream.GetBuffer().Take(pos).ToArray();
-
-                return new BitArray(buffer);
+                return outStream.Position;
             }
         }
 
@@ -41,12 +34,12 @@ namespace Clasterization.Clasterization.Algorythms.NeatrestNeighbour
         {
             if (x.Length == 0 && y.Length == 0)
                 return 0;
-            var result = 1.0 * (CompressString(x + y).Length + CompressString(y + x).Length)
-                   / (CompressString(x + x).Length + CompressString(y + y).Length);
+            var result = 1.0 * (CompressStringLength(x + y) + CompressStringLength(y + x))
+                   / (CompressStringLength(x + x) + CompressStringLength(y + y));
             return result;
         }
 
-        public bool Equals(string x, string y) => 
+        public bool Equals(string x, string y) =>
             CalculateDistance(x, y) <= StringComparisonAccuracy;
 
         public int GetHashCode(string obj)

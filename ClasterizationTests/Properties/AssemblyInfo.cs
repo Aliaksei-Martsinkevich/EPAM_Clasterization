@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Clasterization")]
+[assembly: AssemblyTitle("ClasterizationTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Clasterization")]
+[assembly: AssemblyProduct("ClasterizationTests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7ae5cc84-0bc0-47e6-b3cb-bcbcd115538e")]
+[assembly: Guid("ee81b42c-fbc4-49cf-bf4d-426b63f4a7be")]
 
 // Version information for an assembly consists of the following four values:
 //

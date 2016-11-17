@@ -14,6 +14,7 @@ namespace Clasterization.Clasterization.Algorythms.NeatrestNeighbour
         {
             if (x.Length == 0)
                 return y.Length;
+
             if (y.Length == 0)
                 return x.Length;
 

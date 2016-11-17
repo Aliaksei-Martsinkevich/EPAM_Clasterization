@@ -2,15 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using Clasterization.Interfaces;
 
 namespace Clasterization
 {
-	internal class Table : ITable
+    public class Table : ITable
 	{
 		private readonly IList<IList<string>> _table;
 

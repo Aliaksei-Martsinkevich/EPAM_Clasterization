@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Clasterization.Clasterization.Algorythms;
 using Clasterization.Interfaces;
 
 namespace Clasterization.Clasterization

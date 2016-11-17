@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Clasterization.Clasterization.Algorythms.KeyCollision
 {
-    internal class FingerprintStringComparer : IEqualityComparer<string>
+    public class FingerprintStringComparer : IEqualityComparer<string>
     {
         private static string CalculateKey(string value)
         {
@@ -14,7 +14,7 @@ namespace Clasterization.Clasterization.Algorythms.KeyCollision
                 .RemoveLongWhiteSpaces()
                 .Split(' ')
                 .OrderBy(s => s)
-                .Aggregate((result, current) => result + ' ' + current);
+                .Aggregate((result, current) => result + current);
         }
         
         public bool Equals(string x, string y)

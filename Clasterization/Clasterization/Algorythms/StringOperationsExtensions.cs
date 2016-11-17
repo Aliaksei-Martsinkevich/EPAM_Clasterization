@@ -37,7 +37,7 @@ namespace Clasterization.Clasterization.Algorythms
                     if (char.IsWhiteSpace(c))
                     {
                         if (builder.Length <= 0) return builder;
-                        if (char.IsWhiteSpace(builder[builder.Length - 1]))
+                        if (!char.IsWhiteSpace(builder[builder.Length - 1]))
                             builder.Append(' ');
                     }
                     else
