@@ -52,6 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Clasterization\Algorythms\KeyCollision\FingerprintStringComparerTests.cs" />
+    <Compile Include="Clasterization\Algorythms\StringOperationsExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

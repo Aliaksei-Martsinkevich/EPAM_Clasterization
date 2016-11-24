@@ -79,8 +79,6 @@ namespace Clasterization
                     writer.Write(claster, $"{outputDirectory.FullName}//{++number}.csv");
                 }
             }
-
-
         }
     }
 }

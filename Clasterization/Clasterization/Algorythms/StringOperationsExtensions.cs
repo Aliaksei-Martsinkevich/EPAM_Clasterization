@@ -21,6 +21,7 @@ namespace Clasterization.Clasterization.Algorythms
         {
             if (str.Length < n) 
                 return new List<string>();
+
             var result = new List<string>(str.Length - 1);
             for (var i = 0; i <= str.Length - n; i++)
             {
