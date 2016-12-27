@@ -7,7 +7,7 @@ namespace Clasterization.Clasterization
 {
     public class Fixer : IFixer
     {
-        IClasterizer _clasterizer;
+        readonly IClasterizer _clasterizer;
 
         public Fixer(IClasterizer clasterizer)
         {
@@ -22,8 +22,31 @@ namespace Clasterization.Clasterization
 
         public ITable FixTable(ITable table, int columnId)
         {
-            var clasters = _clasterizer.Clasterize(table, columnId);
-            var columnsFromClasters = clasters.Select(t => t.GetColumn(columnId).ToList()).ToList();
+            var columnsFromClasters = _clasterizer
+                .Clasterize(table, columnId)
+                .Select(t => t.GetColumn(columnId).ToList())
+                .ToList();
+
+            var dict = CreateReplaceDict(columnsFromClasters);
+
+            var fixedData = FixDataWithDict(table, columnId, dict);
+
+            return new Table(fixedData, table.Header);
+        }
+
+        private static List<IList<string>> FixDataWithDict(ITable table, int columnId, Dictionary<string, string> dict)
+        {
+            var fixedData = new List<IList<string>>();
+            foreach (var lst in table.Select(row => row.ToList()))
+            {
+                lst[columnId] = dict[lst[columnId]];
+                fixedData.Add(lst);
+            }
+            return fixedData;
+        }
+
+        private static Dictionary<string, string> CreateReplaceDict(List<List<string>> columnsFromClasters)
+        {
             var dict = new Dictionary<string, string>();
             foreach (var column in columnsFromClasters)
             {
@@ -33,15 +56,8 @@ namespace Clasterization.Clasterization
                     dict.Add(s, pop);
                 }
             }
-            var fixedData = new List<IList<string>>();
-            foreach (var lst in table.Select(row => row.ToList()))
-            {
-                lst[columnId] = dict[lst[columnId]];
-                fixedData.Add(lst);
-            }
-            return new Table(fixedData, table.Header);
+            return dict;
         }
-        
 
         private static string MostPopular(IList<string> strings)
         {
