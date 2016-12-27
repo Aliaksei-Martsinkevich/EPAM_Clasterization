@@ -28,3 +28,9 @@ namespace Clasterization.Clasterization.Algorythms.KeyCollision
         }
     }
 }
+//TODO:
+//NUNIT
+//XUNIT 
+
+//MOQ
+//Nsubstitute

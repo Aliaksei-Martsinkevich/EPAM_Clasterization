@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Clasterization.Clasterization;
 using Clasterization.Clasterization.Algorythms.KeyCollision;
 using Clasterization.Clasterization.Algorythms.NeatrestNeighbour;
@@ -39,7 +41,7 @@ namespace Clasterization
                     _method = new Clasterizer(new PhoneticStringComparer());
                     break;
                 case "leivenstein":
-                    _method = new Clasterizer(new LeivensteinStringComparer(5D));
+                    _method = new Clasterizer(new LeivensteinStringComparer(555D));
                     break;
                 case "ppm":
                     _method = new Clasterizer(new PpmStringComparer(1D));
@@ -53,8 +55,6 @@ namespace Clasterization
 
             Initialize(_configuration);
 
-
-
             var reader = new Reader();
             var table = reader.ReadTable(_fileinfo.FullName);
 
@@ -62,21 +62,20 @@ namespace Clasterization
             {
                 var writer = new Writer();
                 var outputDirectory = _fileinfo.Directory.CreateSubdirectory(
-                    $"{_fileinfo.Name.Split('.')[0]}_{_configuration.Algorythm}_'{table.Header[_headerNumber]}'");
+                    $"Results_{DateTime.Now.ToString("HH_mm DD_MM")}//{_fileinfo.Name.Split('.')[0]}_{_configuration.Algorythm}_'{table.Header[_headerNumber]}'");
                 var number = 0;
 
+                var clastersList = _method.Clasterize(table, _headerNumber).ToList();
+                var notEmptyClasters = clastersList.Where(claseters => claseters.Count() > 1).ToList();
 
-                var enumerable = _method.Clasterize(table, _headerNumber);
-                var filter1 = enumerable.Where(claseters => claseters.Count() > 1).ToList();
-                IEnumerable<string> enumerable1;
-                var filter2 = filter1.Where(clasters =>
+                foreach (var claster in notEmptyClasters)
                 {
-                    enumerable1 = clasters.GetColumn(_headerNumber);
-                    return enumerable1.Distinct().Count() > 1;
-                }).ToList();
-                foreach (var claster in filter2)
-                {
-                    writer.Write(claster, $"{outputDirectory.FullName}//{++number}.csv");
+                    var dist = claster.GetColumn(_headerNumber).Distinct().Count() > 1 
+                        ? string.Empty
+                        : "//UniqueDir";
+                    writer.Write(claster, $"{outputDirectory.FullName}" +
+                                          $"{dist}" +
+                                          $"//{++number}.csv");
                 }
             }
         }

@@ -56,7 +56,9 @@
     <Compile Include="Clasterization\Algorythms\NeatrestNeighbour\PPMStringComparer.cs" />
     <Compile Include="Clasterization\Clasterizer.cs" />
     <Compile Include="Clasterization\Algorythms\StringOperationsExtensions.cs" />
+    <Compile Include="Clasterization\Fixer.cs" />
     <Compile Include="Interfaces\IClasterizer.cs" />
+    <Compile Include="Interfaces\IFixer.cs" />
     <Compile Include="Interfaces\IReader.cs" />
     <Compile Include="Interfaces\ITable.cs" />
     <Compile Include="Interfaces\IWriter.cs" />

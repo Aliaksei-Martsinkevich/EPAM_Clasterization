@@ -2,17 +2,15 @@
 using System;
 using System.Linq;
 using System.Text;
-
+//TDD
 // ReSharper disable once CheckNamespace
 namespace Clasterization.Clasterization.Algorythms.Tests
 {
     [TestClass()]
     public class StringOperationsExtensionsTests
     {
-        private Random _random = new Random();
-
         [TestMethod()]
-        public void RemovePunctuationTest()
+        public void ShouldRemovePunctuation()
         {
             string.Empty.RemovePunctuation();
 
